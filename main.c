@@ -169,8 +169,8 @@ AutomateType createAutomateNombre() {
     automate.nombreAlphabet = 12;
     automate.nombreEtats = 3;
 
-    char chiffre[10] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
-    char signe[2] = {'+', '-'};
+    char chiffre[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+    char signe[] = {'+', '-'};
 
 
     ///////////////////////////////////////////////// Q0
@@ -227,10 +227,12 @@ AutomateType createAutomateLettre() {
     automate.nombreAlphabet = 26 + 26;
     automate.nombreEtats = 2;
 
-    char lettreMin[52] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
-                          't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-                          'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-                          'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    char lettreMinMaj[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+                           's',
+                           't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                           'L',
+                           'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+                           'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
 
     ///////////////////////////////////////////////// Q0
@@ -240,7 +242,7 @@ AutomateType createAutomateLettre() {
     automate.etatQ[0].numEtat = 0;
 
     for (int i = 0; i < automate.nombreAlphabet; ++i) {
-        automate.etatQ[0].transition[i].symbole = lettreMin[i];
+        automate.etatQ[0].transition[i].symbole = lettreMinMaj[i];
         automate.etatQ[0].transition[i].numEtatNext = 1;
     }
 
@@ -253,12 +255,127 @@ AutomateType createAutomateLettre() {
     automate.etatQ[1].numEtat = 1;
 
     for (int i = 0; i < automate.nombreAlphabet; ++i) {
-        automate.etatQ[1].transition[i].symbole = lettreMin[i];
+        automate.etatQ[1].transition[i].symbole = lettreMinMaj[i];
         automate.etatQ[1].transition[i].numEtatNext = 1;
     }
 
 
     return automate;
+}
+
+
+//automate reconnaisant les commentaire
+AutomateType creatAutomateCommentaire() {
+
+
+    AutomateType automate;
+    automate.nombreAlphabet = 64;
+    automate.nombreEtats = 6;
+
+    char chiffre[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+
+    char lettreMinMaj[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+                           's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                           'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                           'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+    char caractere[] = {'/', '*'};
+
+    ///////////////////////////////////////////////// Q0
+
+    automate.etatQ[0].init = true;
+    automate.etatQ[0].final = false;
+    automate.etatQ[0].numEtat = 0;
+
+    automate.etatQ[0].transition[0].symbole = '/';
+    automate.etatQ[0].transition[0].numEtatNext = 1;
+
+
+    ///////////////////////////////////////////////// Q1
+
+    automate.etatQ[1].init = false;
+    automate.etatQ[1].final = false;
+    automate.etatQ[1].numEtat = 1;
+
+    automate.etatQ[1].transition[0].symbole = '/';
+    automate.etatQ[1].transition[0].numEtatNext = 2;
+
+    automate.etatQ[1].transition[1].symbole = '*';
+    automate.etatQ[1].transition[1].numEtatNext = 3;
+
+
+    ///////////////////////////////////////////////// Q2
+
+    automate.etatQ[2].init = false;
+    automate.etatQ[2].final = true;
+    automate.etatQ[2].numEtat = 2;
+
+
+    for (int i = 0; i < 52; ++i) {
+        automate.etatQ[2].transition[i].symbole = lettreMinMaj[i];
+        automate.etatQ[2].transition[i].numEtatNext = 2;
+    }
+
+    for (int j = 52; j < 52 + 10; ++j) {
+        automate.etatQ[2].transition[j].symbole = chiffre[j - 52];
+        automate.etatQ[2].transition[j].numEtatNext = 2;
+    }
+
+
+
+    ///////////////////////////////////////////////// Q3
+
+    automate.etatQ[3].init = false;
+    automate.etatQ[3].final = false;
+    automate.etatQ[3].numEtat = 3;
+
+    for (int i = 0; i < 52; ++i) {
+        automate.etatQ[3].transition[i].symbole = lettreMinMaj[i];
+        automate.etatQ[3].transition[i].numEtatNext = 3;
+    }
+
+    for (int j = 52; j < 62; ++j) {
+        automate.etatQ[3].transition[j].symbole = chiffre[j - 52];
+        automate.etatQ[3].transition[j].numEtatNext = 3;
+    }
+
+    automate.etatQ[3].transition[62].symbole = '*';
+    automate.etatQ[3].transition[62].numEtatNext = 4;
+
+
+    ///////////////////////////////////////////////// Q4
+
+
+
+    automate.etatQ[4].init = false;
+    automate.etatQ[4].final = false;
+    automate.etatQ[4].numEtat = 4;
+
+
+    for (int i = 0; i < 52; ++i) {
+        automate.etatQ[4].transition[i].symbole = lettreMinMaj[i];
+        automate.etatQ[4].transition[i].numEtatNext = 3;
+    }
+
+    for (int j = 52; j < 52 + 10; ++j) {
+        automate.etatQ[4].transition[j].symbole = chiffre[j - 52];
+        automate.etatQ[4].transition[j].numEtatNext = 3;
+    }
+
+    automate.etatQ[4].transition[62].symbole = '/';
+    automate.etatQ[4].transition[62].numEtatNext = 5;
+
+
+
+    ///////////////////////////////////////////////// Q5
+
+    automate.etatQ[5].init = false;
+    automate.etatQ[5].final = true;
+    automate.etatQ[5].numEtat = 5;
+
+    return automate;
+
+
 }
 
 
@@ -270,9 +387,12 @@ int main() {
     AutomateType automate2 = createAutomateExemple(); //abc exemple TP
     AutomateType automate3 = createAutomateLettre();  // chaine en lettre
 
-    char mot[] = "+1209";
 
-    executeAutomate(automate1, mot);
+    AutomateType automate4 = creatAutomateCommentaire();
+
+    char mot[] = "/**ss*/";
+
+    executeAutomate(automate4, mot);
 
 
     return 0;
